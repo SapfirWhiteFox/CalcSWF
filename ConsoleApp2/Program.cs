@@ -60,12 +60,7 @@ namespace CalcSWF
                     break;
 
                     case "/":
-                        InputInt();
-                        if(Number == 0)
-                        {
-                        Console.WriteLine("Result = NaN");
-                        return;
-                        }
+                        InputInt();                      
                         Result /= Number;
                         Console.WriteLine($"Result = {Result.ToString()}");
                     break;
