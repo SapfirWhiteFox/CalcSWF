@@ -22,49 +22,62 @@ namespace StringChanger
             Console.WriteLine("введите через запятую свои - Фамилия Имя Отчество (дата рождения)ДД-ММ-ГГГГ Доход.\n Пример записи: \n Иванов Иван Иванович 01-01-2011 5000");
             var input = Console.ReadLine();
             var subs = input.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
-            if (!DateTime.TryParse(subs[3], out DateTime TryDateBirth)) 
+            try
+            {
+                if (!DateTime.TryParse(subs[3], out DateTime tryDateBirth))
                 {
                     Console.WriteLine("Вы ввели не дату подходящего формата ДД-ММ-ГГГГ. попробуйте еще раз ");
                     TryInputData();
                 }
-
-            if (subs[4].StartsWith("$"))
-            {
-                subs[4]=subs[4].Substring(1);
-                if (!ulong.TryParse(subs[4], out ulong TrySalary))
+                else
                 {
-                    Console.WriteLine("Вы ввели не доход в числовом формате, попробуйте еще раз.");
-                    TryInputData();
+                    TryDateBirth = tryDateBirth;
                 }
-                TrySalary *= 65;
-            }
-            else
-            {
-                if (subs[4].EndsWith("$"))
+
+                if (subs[4].StartsWith("$"))
                 {
-                    int EndIndex = subs[4].LastIndexOf("$");
-                    subs[4]=subs[4].Substring(0, EndIndex);
-                    if (!ulong.TryParse(subs[4], out ulong TrySalary))
+                    subs[4] = subs[4].Substring(1);
+                    if (!ulong.TryParse(subs[4], out ulong trySalary))
                     {
                         Console.WriteLine("Вы ввели не доход в числовом формате, попробуйте еще раз.");
                         TryInputData();
                     }
-
-                    TrySalary *= 65;
+                    TrySalary = trySalary * 65;
                 }
                 else
                 {
-                    if (!ulong.TryParse(subs[4], out ulong TrySalary))
+                    if (subs[4].EndsWith("$"))
                     {
-                        Console.WriteLine("Вы ввели не доход в числовом формате, попробуйте еще раз.");
-                        TryInputData();
+                        int EndIndex = subs[4].LastIndexOf("$");
+                        subs[4] = subs[4].Substring(0, EndIndex);
+                        if (!ulong.TryParse(subs[4], out ulong trySalary))
+                        {
+                            Console.WriteLine("Вы ввели не доход в числовом формате, попробуйте еще раз.");
+                            TryInputData();
+                        }
+
+                        TrySalary = trySalary * 65;
+                    }
+                    else
+                    {
+                        if (!ulong.TryParse(subs[4], out ulong trySalary))
+                        {
+                            Console.WriteLine("Вы ввели не доход в числовом формате, попробуйте еще раз.");
+                            TryInputData();
+                        }
+                        TrySalary = trySalary;
                     }
                 }
+                TryFirstName = subs[0];
+                TryName = subs[1];
+                TryLastName = subs[2];
+                return;
             }
-            TryFirstName = subs[0];
-            TryName = subs[1];
-            TryLastName = subs[2];
-            return;
+            catch 
+            {
+                Console.WriteLine("что то пошло не так, попробуйте еще раз");
+                TryInputData();
+            }
         }
         static void Main(string[] args)
         {
