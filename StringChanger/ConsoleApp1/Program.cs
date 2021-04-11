@@ -10,11 +10,9 @@ namespace StringChanger
     class Program
 
     {
-        private static string TryFirstName { get; set; } = "";
-        private static string TryName { get; set; } = "";
-        private static string TryLastName { get; set; } = "";
-        private static DateTime TryDateBirth { get; set; }
-        private static ulong TrySalary { get; set; } = 0;
+
+        private static Data A { get; set; } = new Data();
+       
 
 
         private static void TryInputData()
@@ -24,25 +22,25 @@ namespace StringChanger
             var subs = input.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
             try
             {
-                if (!DateTime.TryParse(subs[3], out DateTime tryDateBirth))
+                if (!DateTime.TryParse(subs[3], out var tryDateBirth))
                 {
                     Console.WriteLine("Вы ввели не дату подходящего формата ДД-ММ-ГГГГ. попробуйте еще раз ");
                     TryInputData();
                 }
                 else
                 {
-                    TryDateBirth = tryDateBirth;
+                    A.DateBirth = tryDateBirth;
                 }
 
                 if (subs[4].StartsWith("$"))
                 {
                     subs[4] = subs[4].Substring(1);
-                    if (!ulong.TryParse(subs[4], out ulong trySalary))
+                    if (!ulong.TryParse(subs[4], out var trySalary))
                     {
                         Console.WriteLine("Вы ввели не доход в числовом формате, попробуйте еще раз.");
                         TryInputData();
                     }
-                    TrySalary = trySalary * 65;
+                   A.Salary = trySalary * 65;
                 }
                 else
                 {
@@ -50,44 +48,39 @@ namespace StringChanger
                     {
                         int EndIndex = subs[4].LastIndexOf("$");
                         subs[4] = subs[4].Substring(0, EndIndex);
-                        if (!ulong.TryParse(subs[4], out ulong trySalary))
+                        if (!ulong.TryParse(subs[4], out var trySalary))
                         {
                             Console.WriteLine("Вы ввели не доход в числовом формате, попробуйте еще раз.");
                             TryInputData();
                         }
 
-                        TrySalary = trySalary * 65;
+                        A.Salary = trySalary * 65;
                     }
                     else
                     {
-                        if (!ulong.TryParse(subs[4], out ulong trySalary))
+                        if (!ulong.TryParse(subs[4], out var trySalary))
                         {
                             Console.WriteLine("Вы ввели не доход в числовом формате, попробуйте еще раз.");
                             TryInputData();
                         }
-                        TrySalary = trySalary;
+                        A.Salary = trySalary;
                     }
                 }
-                TryFirstName = subs[0];
-                TryName = subs[1];
-                TryLastName = subs[2];
+                A.FirstName = subs[0];
+                A.Name = subs[1];
+                A.LastName = subs[2];
                 return;
             }
-            catch 
+            catch (Exception ex)
             {
-                Console.WriteLine("что то пошло не так, попробуйте еще раз");
+                Console.WriteLine($"Простите, что то пошло не так( {ex.Message} ). Попробуйте еще раз");
                 TryInputData();
             }
         }
         static void Main(string[] args)
         {
             TryInputData();
-            Console.WriteLine("Фамилия: "+ TryFirstName
-                +".\nИмя: " + TryName
-                + ".\nОтчество: " + TryLastName
-                + ".\nДата рождения: " + TryDateBirth
-                + "\nДоход: " + TrySalary +"(Рублей)."
-                );
+            Console.WriteLine($"Фамилия: {A.FirstName}.\nИмя: {A.Name}.\nОтчество: {A.LastName}.\nДата рождения: {A.DateBirth.ToString("dd,MM,yyyy")}.\nДоход: {A.Salary} (Рублей).");
             Console.ReadKey();
         }
 
