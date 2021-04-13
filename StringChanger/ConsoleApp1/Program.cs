@@ -10,13 +10,15 @@ namespace StringChanger
     class Program
 
     {
+        private const string End = "end";
         public static List<Data> GetUserData()
         {
             var userList = new List<Data>();
             while (true)
-            { 
+            {
+                Console.WriteLine("Введите данные пользователя (Фамилия Имя Отчества ДатаРождения Доход) или END  для завершения ввода");
                 var input = Console.ReadLine();
-                if (input == "end")
+                if (string.Equals(input, End, StringComparison.CurrentCultureIgnoreCase))
                 {
                     return userList;
                 }
@@ -34,44 +36,65 @@ namespace StringChanger
         public static Data ConvertToData(string lol)
         {
             ulong dollars = 0;
-            var subs = lol.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
-            if (subs[4].StartsWith("$"))
+            try
             {
-                subs[4] = subs[4].Substring(1, subs[4].Length - 1);
-                if (ulong.TryParse(subs[4], out dollars))
+                var subs = lol.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+         
+                if (subs.Count > 5)
                 {
-                    dollars *= 65;
+                    Console.WriteLine("простите, но вы ввели слишком много значений");
+                    return null;
                 }
-            }
 
-            if (subs[4].EndsWith("$"))
-            {
-                subs[4] = subs[4].Substring(0, subs[4].Length - 1);
-                if (ulong.TryParse(subs[4], out dollars))
+                if (subs[4].StartsWith("$"))
                 {
-                    dollars *= 65;
+                    subs[4] = subs[4].Substring(1, subs[4].Length - 1);
+                    if (ulong.TryParse(subs[4], out dollars))
+                    {
+                        dollars *= 65;
+                    }
                 }
-            }
 
-            if (!DateTime.TryParse(subs[3], out var tryDateBirth)
-                || (dollars <= 0 && !ulong.TryParse(subs[4], out dollars)))
+                if (subs[4].EndsWith("$"))
+                {
+                    subs[4] = subs[4].Substring(0, subs[4].Length - 1);
+                    if (ulong.TryParse(subs[4], out dollars))
+                    {
+                        dollars *= 65;
+                    }
+                }
+
+                if (!DateTime.TryParse(subs[3], out var tryDateBirth)
+                    || (dollars <= 0 && !ulong.TryParse(subs[4], out dollars)))
+                {
+                    Console.WriteLine("Ошибка ввода доходов и/или даты рождения");
+                    return null;
+                }
+                return new Data
+                {
+                    FirstName = subs[0],
+                    Name = subs[1],
+                    LastName = subs[2],
+                    DateBirth = tryDateBirth,
+                    Salary = dollars
+                };
+            }
+            catch (Exception ex) 
             {
+                
+                Console.WriteLine($"произошла ошибка - {ex}");
                 return null;
             }
-            return new Data
-            {
-                FirstName = subs[0],
-                Name = subs[1],
-                LastName = subs[2],
-                DateBirth = tryDateBirth,
-                Salary = dollars
-            };
         }            
 
         static void Main(string[] args)
         {
            var list= GetUserData();
-            list.ForEach(a=>Console.WriteLine(a.Salary));
+            list.ForEach(a=>Console.WriteLine($"\n\n{nameof(a.FirstName)} - {a.FirstName}." +
+                                                $"\n{nameof(a.Name)} - {a.FirstName}." +
+                                                $"\n{nameof(a.LastName)} - {a.FirstName}." +
+                                                $"\n{nameof(a.DateBirth)} - {a.DateBirth.ToString("dd-MM-YYYY")}." +
+                                                $"\n{nameof(a.Salary)} - {a.Salary} (RUB)."));
             Console.ReadKey();
 
            
