@@ -16,7 +16,7 @@ namespace StringChanger
             var userList = new List<Data>();
             while (true)
             {
-                Console.WriteLine("Введите данные пользователя (Фамилия Имя Отчества ДатаРождения Доход) или END  для завершения ввода");
+                Console.WriteLine("Введите данные нового пользователя (Фамилия Имя Отчества ДатаРождения Доход) или END  для завершения ввода");
                 var input = Console.ReadLine();
                 if (string.Equals(input, End, StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -46,7 +46,7 @@ namespace StringChanger
                     return null;
                 }
 
-                if (subs[4].StartsWith("$"))
+                if (subs[4].StartsWith('$'))
                 {
                     subs[4] = subs[4].Substring(1, subs[4].Length - 1);
                     if (ulong.TryParse(subs[4], out dollars))
@@ -55,7 +55,7 @@ namespace StringChanger
                     }
                 }
 
-                if (subs[4].EndsWith("$"))
+                if (subs[4].EndsWith('$'))
                 {
                     subs[4] = subs[4].Substring(0, subs[4].Length - 1);
                     if (ulong.TryParse(subs[4], out dollars))
@@ -90,11 +90,8 @@ namespace StringChanger
         static void Main(string[] args)
         {
            var list= GetUserData();
-            list.ForEach(a=>Console.WriteLine($"\n\n{nameof(a.FirstName)} - {a.FirstName}." +
-                                                $"\n{nameof(a.Name)} - {a.FirstName}." +
-                                                $"\n{nameof(a.LastName)} - {a.FirstName}." +
-                                                $"\n{nameof(a.DateBirth)} - {a.DateBirth.ToString("dd-MM-YYYY")}." +
-                                                $"\n{nameof(a.Salary)} - {a.Salary} (RUB)."));
+            int count = 0;
+            list.ForEach(a => Console.WriteLine($"{count += 1}. {a.FirstName} {a.Name} {a.LastName} родившийся {a.DateBirth.ToString("dd-MM-yyyy")} получает ЗП - {a.Salary} (RUB).")) ;
             Console.ReadKey();
 
            
