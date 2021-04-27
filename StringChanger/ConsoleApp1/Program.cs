@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using User.Data;
 using User.Extensions;
@@ -11,10 +12,8 @@ namespace StringChanger
     {                  
         static void Main(string[] args)
         {
-           var list= GetUserData();
-           Count = 0;
-            list.ForEach(a => Console.WriteLine($"{Count += 1}. {a}")) ;
-            
+          // var worker = new UserWorker();          
+            var readText = 
             
             Console.ReadKey();
 

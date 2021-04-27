@@ -8,12 +8,13 @@ namespace User.Extensions
 {
     public static class StringExtension
     {
-        public static UserData ConvertToData(this string lol)
+        public static UserData ConvertToData(this string input)
         {
+            
             ulong dollars = 0;
             try
             {
-                var subs = lol?.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+                var subs = input?.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
 
                 if (subs.Count > 5)
                 {
@@ -40,7 +41,9 @@ namespace User.Extensions
                 }
 
                 if (!DateTime.TryParse(subs[3], out var tryDateBirth)
-                    || (dollars <= 0 && !ulong.TryParse(subs[4], out dollars)) || tryDateBirth.Year >= 2020)
+                                    || (dollars <= 0 && !ulong.TryParse(subs[4], out dollars)) 
+                                    || tryDateBirth.Year > DateTime.Now.Year-14 
+                                    || tryDateBirth.Year < DateTime.Now.Year -120)
                 {
                     Console.WriteLine("Ошибка ввода доходов и/или даты рождения");
                     return null;
