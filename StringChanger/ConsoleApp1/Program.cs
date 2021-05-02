@@ -9,16 +9,12 @@ namespace StringChanger
 {
     class Program
 
-    {                  
+    {               
         static void Main(string[] args)
         {
-          // var worker = new UserWorker();          
-            var readText = 
-            
-            Console.ReadKey();
-
-           
+           var worker = new UserWorker();         
+                     
+            Console.ReadKey();           
         }
-
     }
 }
