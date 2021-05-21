@@ -15,7 +15,7 @@ namespace StringChanger
         
         static void Main(string[] args)
         {
-           var fileWorker = new FileWorker(@"C:\GitHubRep\SWFCode\Users");
+           var fileWorker = new FileWorker(@"C:\GitHubRep\SWFCode\StringChanger\Users");
            var worker = new UserWorker(fileWorker);
 
             Console.WriteLine("Program is over.Press any key.");

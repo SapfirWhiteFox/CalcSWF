@@ -13,13 +13,10 @@ namespace User.Workers
     class UserWorker
     {       
         private const string End = "end";
-
-        public List<UserData> ListOfData { get; set; } = new List<UserData>();       
-        
+        public List<UserData> ListOfData { get; set; } = new List<UserData>();     
         public FileWorker FileWorker { get; }
 
         public UserWorker(FileWorker worker)
-
         {
             if (worker == null)
             {
@@ -32,10 +29,7 @@ namespace User.Workers
             GetUserData();
             WaitUserAction();
         }
-
-     
-       
-
+        
         private void GetUserData()
         {
             while (true)
@@ -75,6 +69,7 @@ namespace User.Workers
                 UserActionFabric(action);
             }
         }
+
         private void UserActionFabric(string actionName)
         {
             switch (actionName)
@@ -93,6 +88,7 @@ namespace User.Workers
                     break;
             }
         }
+
             public void DoDeleteAction()//хуйня не работает
         {           
             var listToDel = GetNumsToDelete();
@@ -136,8 +132,6 @@ namespace User.Workers
             var failedMsg = string.Join(", ", failed);
             Console.WriteLine($"Не удалось удалить ползователей с номером :{failedMsg}");
             return success.Distinct().OrderByDescending(x => x).ToList();
-        }                 
-
-    }
-}
-  
+        }           
+     }
+}  
