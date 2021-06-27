@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Globalization;
+using System.Text;
 
 namespace PortfolioApp
 {
@@ -16,34 +17,26 @@ namespace PortfolioApp
         public static String Sex { get; set; } = null;
         public static String Book { get; set; } = null;
 
-
+ public static void Main(string[] args)
+        {
+            //GetUserData();
+            //UseAndShowData();
+            Console.WriteLine($"{FirstName} {Name} {LastName}, введите приветствие.");
+            var input = Console.ReadLine();
+            UserAdvert(input);                     
+            Console.WriteLine("Program is over.Press any key.");
+            Console.ReadKey();
+        }
 
         public static void GetUserData()
         {
-            Console.WriteLine("Введите данные нового пользователя (Фамилия Имя Отчество Пол(муж/ж) Возраст(от 14 до 120) ЛюбимаяКнига(если есть)))");
+            Console.WriteLine("Введите данные нового пользователя (Фамилия Имя Отчество Пол(муж/жен) Возраст(от 14 до 120) ЛюбимаяКнига(если есть)))");
             while (true)
             {
                 try 
-                {
-                    CultureInfo ruRu = new CultureInfo("ru-RU");                                     
-                    var inputUser = Console.ReadLine();
-                    if (string.Equals(inputUser, End, StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        return;
-                    }
-                    if (inputUser == null)
-                    {
-                        Console.WriteLine("простите, но вы ничего не ввели.Введите пользователя заново.");
-                        continue;
-                    }
-
+                {                                                      
+                    var inputUser = Console.ReadLine();                           
                     var subs = inputUser?.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
-
-                    if (subs.Count > 6)
-                    {
-                        Console.WriteLine("Простите, но вы ввели слишком много значений.Введите пользователя заново.");
-                        continue;
-                    }                  
                     if (subs.Count < 4)
                     {
                         Console.WriteLine("Простите, но вы ввели слишком мало значений.Введите пользователя заново.");
@@ -81,12 +74,10 @@ namespace PortfolioApp
                 }
              }
         }
-
         public static void UseAndShowData()
         {
             var sexMsg = "Пол - Мужской.";
             if (string.Equals(Sex, SexF, StringComparison.CurrentCultureIgnoreCase))
-
             {
                 sexMsg = "Пол - Женский.";
             }
@@ -97,38 +88,43 @@ namespace PortfolioApp
                 pensionAge = 65;
             }
             var beforePensionAge = -(Age - pensionAge) ;           
-            var pensionAgeMsg = $"До пенсии осталось {beforePensionAge} лет.";
+            var pensionAgeMsg = $"До пенсии лет осталось - {beforePensionAge}.";
             if (beforePensionAge <= 0)
             {
                 pensionAgeMsg = "Уже пенсионер.";
             }
-            var bookMsg =$"Любимая книга пользователя -{Book}" ;
+            var bookMsg =$"Любимая книга пользователя - {Book}." ;
             if(Book==null)
             {
                 bookMsg = "Любимая книга пользователя не указана";
             }
-
             double yearsLived = (double)Age / 1.20  ;
-            var yearsLivedMsg = $"Прожито {yearsLived.ToString()} % жизни.";
+            var yearsLivedMsg = $"Прожито {yearsLived.ToString("N1")} % жизни.";
             Console.WriteLine($"Пользователь:{FirstName} {Name} {LastName}.\n{sexMsg}\nВозраст: {Age}.\n{yearsLivedMsg}\n{pensionAgeMsg}\n{bookMsg}");
-
         }
-        public static void GetUserAdvert()
+
+        public static void UserAdvert(string advert)
         {
+            StringBuilder sb = new StringBuilder();     
+            var index = advert.IndexOf("Сосиска", StringComparison.CurrentCultureIgnoreCase);
+            if (index != -1)
+            {
+               
+                        var leftSub = $"{advert.Substring(0, index)}ПОНЧИК";
+                        var rightSub= advert.Substring(index + 7, advert.Length - (index + 7));
+                        sb.Append($"{leftSub}{rightSub}");
+                          
+                UserAdvert(sb.ToString());
+            } 
+            else
+            {
+                sb.Append(advert);
+            }
+            Console.WriteLine(sb.ToString()); 
+            return;         
+        }        
 
-        }
-
-
-
-        public static void Main(string[] args)
-        {
-            GetUserData();
-            UseAndShowData();
-            GetUserAdvert();           // пирожок делай через сабстринг. ВСПОМИНАЙ.
-
-            Console.WriteLine("Program is over.Press any key.");
-            Console.ReadKey();
-        }
+       
       
     }
 }
